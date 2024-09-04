@@ -1,4 +1,4 @@
-package VRMS.exceptions;
+package vrms.exceptions;
 
 public class VehicleNotFoundException extends Exception {
     public VehicleNotFoundException(String message) {

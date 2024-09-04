@@ -1,8 +1,8 @@
-package VRMS.service;
+package vrms.service;
 
-import VRMS.entities.Vehicle;
-import VRMS.exceptions.DuplicateVehicleException;
-import VRMS.exceptions.VehicleNotFoundException;
+import vrms.entities.Vehicle;
+import vrms.exceptions.DuplicateVehicleException;
+import vrms.exceptions.VehicleNotFoundException;
 
 import java.util.List;
 

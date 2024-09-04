@@ -1,4 +1,4 @@
-package VRMS.entities;
+package vrms.entities;
 
 import java.io.Serializable;
 

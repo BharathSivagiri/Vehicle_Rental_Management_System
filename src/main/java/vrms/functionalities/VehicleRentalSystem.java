@@ -1,11 +1,11 @@
-package VRMS.functionalities;
+package vrms.functionalities;
 
-import VRMS.entities.Member;
-import VRMS.entities.RentalTransaction;
-import VRMS.entities.Vehicle;
-import VRMS.exceptions.*;
-import VRMS.service.MemberInterface;
-import VRMS.service.VehicleInterface;
+import vrms.entities.Member;
+import vrms.entities.RentalTransaction;
+import vrms.entities.Vehicle;
+import vrms.exceptions.*;
+import vrms.service.MemberInterface;
+import vrms.service.VehicleInterface;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,9 +15,10 @@ import java.util.stream.Collectors;
 
 public class VehicleRentalSystem implements VehicleInterface, MemberInterface
 {
-    private List<Vehicle> vehicles;
-    private List<Member> members;
+    private final List<Vehicle> vehicles;
+    private final List<Member> members;
     private List<RentalTransaction> rentalTransactions;
+    int lastTransactionID = 0;
 
     public VehicleRentalSystem() {
         this.vehicles = new ArrayList<>();
@@ -80,8 +81,6 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
 
         return vehicles;
     }
-
-
 
     @Override
     public List<Vehicle> filterVehiclesByType(String vehicleType)
@@ -231,16 +230,18 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
             rentalPrice *= 0.9;
         }
 
+
+        double totalRentalCost = rentalPrice * rentalDuration;
+
         RentalTransaction transaction = new RentalTransaction(vehicle, member, rentalPrice, rentalDuration);
         rentalTransactions.add(transaction);
         vehicle.setAvailable(false);
 
-        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day%n",
-                vehicleNumber, memberId, rentalDuration, rentalPrice);
+        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day. Total amount: Rs.%.2f%n",
+                vehicleNumber, memberId, rentalDuration, rentalPrice, totalRentalCost);
     }
 
     public String generateTransactionID() {
-        int lastTransactionID = 0;
         lastTransactionID++;
         return "TRANS" + String.format("%04d", lastTransactionID);
     }
@@ -254,14 +255,15 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                 System.out.println("Transaction ID: " + generateTransactionID());
                 System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
                 System.out.println("Member: " + transaction.getMember().getMemberId());
-                System.out.println("Rental Price: " + transaction.getRentalPrice());
+                System.out.println("Rental Price per day: " + transaction.getRentalPrice());
+//                System.out.println("Total Rental Cost: " + transaction.getTotalRentalCost());
                 System.out.println("Rental Duration: " + transaction.getRentalDuration());
                 System.out.println();
             }
         }
 
     public void saveRentalTransactions() {
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("rental_transactions.dat"))) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("rental_transactions.txt"))) {
                 oos.writeObject(rentalTransactions);
                 System.out.println("Rental transactions saved successfully");
             } catch (IOException e) {
@@ -270,7 +272,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         }
 
         public void loadRentalTransactions() {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("rental_transactions.dat"))) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("rental_transactions.txt"))) {
                 rentalTransactions = (List<RentalTransaction>) ois.readObject();
                 System.out.println("Rental transactions loaded successfully");
             } catch (IOException | ClassNotFoundException e) {

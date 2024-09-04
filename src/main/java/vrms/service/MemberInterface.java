@@ -1,8 +1,8 @@
-package VRMS.service;
+package vrms.service;
 
-import VRMS.entities.Member;
-import VRMS.exceptions.DuplicateMemberException;
-import VRMS.exceptions.MemberNotFoundException;
+import vrms.entities.Member;
+import vrms.exceptions.DuplicateMemberException;
+import vrms.exceptions.MemberNotFoundException;
 
 import java.util.List;
 

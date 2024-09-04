@@ -1,4 +1,4 @@
-package VRMS.entities;
+package vrms.entities;
 
 import java.io.Serializable;
 
@@ -59,12 +59,10 @@ public class Member implements Serializable {
 
     @Override
     public String toString() {
-        return "Member List [" +
-                "memberName='" + memberName + '\'' +
-                ", memberId='" + memberId + '\'' +
-                ", memberPhone='" + memberPhone + '\'' +
-                ", memberEmail='" + memberEmail + '\'' +
-                ", isSpecialMember=" + isSpecialMember +
-                ']';
+        return "Name = '" + memberName + '\'' +
+                ", ID = '" + memberId + '\'' +
+                ", Phone Number = '" + memberPhone + '\'' +
+                ", Email = '" + memberEmail + '\'' +
+                ", Premium(true) or Regular(False) = " + isSpecialMember;
     }
 }

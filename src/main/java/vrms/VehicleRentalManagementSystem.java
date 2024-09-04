@@ -1,9 +1,9 @@
-package VRMS;
+package vrms;
 
-import VRMS.entities.Member;
-import VRMS.entities.Vehicle;
-import VRMS.exceptions.*;
-import VRMS.functionalities.VehicleRentalSystem;
+import vrms.entities.Member;
+import vrms.entities.Vehicle;
+import vrms.exceptions.*;
+import vrms.functionalities.VehicleRentalSystem;
 
 import java.util.Scanner;
 
@@ -20,14 +20,14 @@ public class VehicleRentalManagementSystem
                     "║   Vehicle Rental Management System   ║\n" +
                     "╠══════════════════════════════════════╣\n" +
                     "║ Customer Operations:                 ║\n" +
-                    "║  1. Add Member     2. Remove Member  ║\n" +
-                    "║  3. View Members   4. Filter Members ║\n" +
-                    "║  5. Update Member                    ║\n" +
+                    "║ 1. Add Member      2. Remove Member  ║\n" +
+                    "║ 3. View Members    4. Filter Members ║\n" +
+                    "║ 5. Update Member                     ║\n" +
                     "║                                      ║\n" +
                     "║ Vehicle Operations:                  ║\n" +
-                    "║  6. Add Vehicle   7. Remove Vehicle  ║\n" +
-                    "║  8. View Vehicles 9. Filter Vehicles ║\n" +
-                    "║  10. Update Vehicle                  ║\n" +
+                    "║ 6. Add Vehicle    7. Remove Vehicle  ║\n" +
+                    "║ 8. View Vehicles  9. Filter Vehicles ║\n" +
+                    "║ 10. Update Vehicle                   ║\n" +
                     "║                                      ║\n" +
                     "║ Rental Operations:                   ║\n" +
                     "║  11. Rent Vehicle                    ║\n" +

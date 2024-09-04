@@ -1,4 +1,4 @@
-package VRMS.entities;
+package vrms.entities;
 
 import java.io.Serializable;
 
@@ -58,13 +58,12 @@ public class Vehicle implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Vehicle[" +
-                "vehicleNumber='" + vehicleNumber + '\'' +
-                ", vehicleType='" + vehicleType + '\'' +
-                ", vehicleModel='" + vehicleModel + '\'' +
-                ", rentalPrice=" + rentalPrice +
-                ", isAvailable=" + isAvailable +
-                ']';
+    public String toString()
+    {
+        return "Vehicle Number = '" + vehicleNumber + '\'' +
+                ", Type = '" + vehicleType + '\'' +
+                ", Model = '" + vehicleModel + '\'' +
+                ", Rental price per day = " + rentalPrice +
+                ", Available or Not = " + isAvailable;
     }
 }

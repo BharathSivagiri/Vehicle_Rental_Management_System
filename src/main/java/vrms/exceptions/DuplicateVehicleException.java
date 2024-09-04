@@ -1,4 +1,4 @@
-package VRMS.exceptions;
+package vrms.exceptions;
 
 public class DuplicateVehicleException extends Exception {
     public DuplicateVehicleException(String message) {
