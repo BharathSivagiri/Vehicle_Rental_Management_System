@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class VehicleRentalManagementSystem
 {
-    public static void main(String[] args) throws MemberNotFoundException
+    public static void main(String[] args)
     {
         VehicleRentalSystem vehicleRentalSystem = new VehicleRentalSystem();
         Scanner scanner = new Scanner(System.in);
@@ -22,18 +22,20 @@ public class VehicleRentalManagementSystem
                     "║ Customer Operations:                 ║\n" +
                     "║  1. Add Member     2. Remove Member  ║\n" +
                     "║  3. View Members   4. Filter Members ║\n" +
+                    "║  5. Update Member                    ║\n" +
                     "║                                      ║\n" +
                     "║ Vehicle Operations:                  ║\n" +
-                    "║  5. Add Vehicle   6. Remove Vehicle  ║\n" +
-                    "║  7. View Vehicles 8. Filter Vehicles ║\n" +
+                    "║  6. Add Vehicle   7. Remove Vehicle  ║\n" +
+                    "║  8. View Vehicles 9. Filter Vehicles ║\n" +
+                    "║  10. Update Vehicle                  ║\n" +
                     "║                                      ║\n" +
                     "║ Rental Operations:                   ║\n" +
-                    "║  9. Rent Vehicle                     ║\n" +
-                    "║  10. View Transactions               ║\n" +
-                    "║  11. Save Transactions               ║\n" +
-                    "║  12. Load Transactions               ║\n" +
+                    "║  11. Rent Vehicle                    ║\n" +
+                    "║  12. View Transactions               ║\n" +
+                    "║  13. Save Transactions               ║\n" +
+                    "║  14. Load Transactions               ║\n" +
                     "║                                      ║\n" +
-                    "║  13. Exit                            ║\n" +
+                    "║  15. Exit                            ║\n" +
                     "╚══════════════════════════════════════╝\n");
 
             System.out.print("Enter your choice: ");
@@ -82,13 +84,37 @@ public class VehicleRentalManagementSystem
                     vehicleRentalSystem.getMembers();
                     break;
                 case 4:
-                    System.out.print(" Members based on the Subscriptions: ");
+                    System.out.print("Members based on the Subscriptions: ");
                     String memberType = scanner.next();
-                    vehicleRentalSystem.filterMembers(memberType);
+                    try {
+                        vehicleRentalSystem.filterMembers(memberType);
+                    } catch (MemberNotFoundException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+                case 5:
+                    // Update member
+                    System.out.println("Enter member details to update:");
+                    System.out.print("Enter member ID: ");
+                    String memberIdToUpdate = scanner.next();
+                    System.out.print("Enter new member name: ");
+                    String newMemberName = scanner.next();
+                    System.out.print("Enter new member phone: ");
+                    String newMemberPhone = scanner.next();
+                    System.out.print("Enter new member email: ");
+                    String newMemberEmail = scanner.next();
+                    System.out.print("New Premium Member status? (true/false): ");
+                    boolean newIsSpecialMember = scanner.nextBoolean();
+                    Member updatedMember = new Member(newMemberName, memberIdToUpdate, newMemberEmail, newMemberPhone, newIsSpecialMember);
+                    try {
+                        vehicleRentalSystem.updateMember(memberIdToUpdate, updatedMember);
+                    } catch (MemberNotFoundException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
 
                 // Vehicle Operations
-                case 5:
+                case 6:
                     // Add vehicle
                     System.out.println("Enter vehicle details:");
                     System.out.print("Enter vehicle number: ");
@@ -110,7 +136,7 @@ public class VehicleRentalManagementSystem
                         System.out.println("Error adding vehicle. Try again");
                     }
                     break;
-                case 6:
+                case 7:
                     // Remove vehicle
                     System.out.println("Enter vehicle details:");
                     System.out.print("Enter vehicle number: ");
@@ -122,19 +148,37 @@ public class VehicleRentalManagementSystem
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 7:
+                case 8:
                     // View vehicles
                     vehicleRentalSystem.getVehicles();
                     break;
-                case 8:
+                case 9:
                     // Filter vehicles
                     System.out.print("Enter vehicle type to filter: ");
                     String vehicleTypeToFilter = scanner.next();
                     vehicleRentalSystem.filterVehiclesByType(vehicleTypeToFilter);
                     break;
+                case 10:
+                    // Update vehicle
+                    System.out.println("Enter vehicle details to update:");
+                    System.out.print("Enter vehicle number: ");
+                    String vehicleNumberToUpdate = scanner.next();
+                    System.out.print("Enter new vehicle type: ");
+                    String newVehicleType = scanner.next();
+                    System.out.print("Enter new vehicle model: ");
+                    String newVehicleModel = scanner.next();
+                    System.out.print("Enter new vehicle rental price: ");
+                    double newVehicleRentalPrice = scanner.nextDouble();
+                    Vehicle updatedVehicle = new Vehicle(vehicleNumberToUpdate, newVehicleType, newVehicleModel, newVehicleRentalPrice);
+                    try {
+                        vehicleRentalSystem.updateVehicle(updatedVehicle);
+                    } catch (VehicleNotFoundException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
 
                 // Rental Operations
-                case 9:
+                case 11:
                     // Rent vehicle
                     System.out.print("Enter member ID: ");
                     String memberIdToRent = scanner.next();
@@ -155,26 +199,23 @@ public class VehicleRentalManagementSystem
                         System.out.println("Error: " + e.getMessage());
                     }
                     break;
-                case 10:
+                case 12:
                     // View transactions
-                    try
-                    {
+                    try {
                         vehicleRentalSystem.viewRentalTransactions();
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("No transactions available. The transaction list is empty.");
+                    } catch (IllegalStateException e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
-                case 11:
+                case 13:
                     // Save transactions
                     vehicleRentalSystem.saveRentalTransactions();
                     break;
-                case 12:
+                case 14:
                     // Load transactions
                     vehicleRentalSystem.loadRentalTransactions();
                     break;
-                case 13:
+                case 15:
                     // Exit
                     System.exit(0);
                     break;

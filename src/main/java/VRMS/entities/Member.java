@@ -9,7 +9,7 @@ public class Member implements Serializable {
     private String memberEmail;
     private boolean isSpecialMember;
 
-    public Member(String memberName, String memberId, String email, String phoneNumber, boolean isSpecialMember) {
+    public Member(String memberName, String memberId, String memberEmail, String memberPhone, boolean isSpecialMember) {
         this.memberName = memberName;
         this.memberId = memberId;
         this.memberPhone = memberPhone;

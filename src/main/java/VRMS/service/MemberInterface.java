@@ -13,6 +13,8 @@ public interface MemberInterface
 
     void removeMember(String MemberId) throws MemberNotFoundException;
 
+    void updateMember(String memberId, Member updatedMember) throws MemberNotFoundException;
+
     List<Member> getMembers();
 
     List<Member> filterMembers(String memberType) throws MemberNotFoundException;

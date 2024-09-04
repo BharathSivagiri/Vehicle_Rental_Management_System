@@ -49,6 +49,20 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
     }
 
     @Override
+    public void updateVehicle(Vehicle updatedVehicle) throws VehicleNotFoundException
+    {
+        for (int i = 0; i < vehicles.size(); i++)
+        {
+            if (vehicles.get(i).getVehicleNumber().equals(updatedVehicle.getVehicleNumber())) {
+                vehicles.set(i, updatedVehicle);
+                System.out.println("Vehicle updated successfully.");
+                return;
+            }
+        }
+        throw new VehicleNotFoundException("Vehicle with number " + updatedVehicle.getVehicleNumber() + " not found.");
+    }
+
+    @Override
     public List<Vehicle> getVehicles()
     {
         try {
@@ -67,12 +81,14 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         return vehicles;
     }
 
+
+
     @Override
-    public List<Vehicle> filterVehiclesByType(String vehicleType) {
+    public List<Vehicle> filterVehiclesByType(String vehicleType)
+    {
         List<Vehicle> filteredVehicles = vehicles.stream()
                 .filter(v -> v.getVehicleType().equalsIgnoreCase(vehicleType))
                 .collect(Collectors.toList());
-
         if (filteredVehicles.isEmpty()) {
             System.out.println("No vehicles found of type: " + vehicleType);
         } else {
@@ -81,6 +97,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         }
         return filteredVehicles;
     }
+
 
     // CRUD operations for members
     @Override
@@ -105,6 +122,19 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         }
     }
 
+    @Override
+    public void updateMember(String memberId, Member updatedMember) throws MemberNotFoundException
+    {
+        for (int i = 0; i < members.size(); i++) {
+            if (members.get(i).getMemberId().equals(memberId)) {
+                members.set(i, updatedMember);
+                System.out.println("Member updated successfully.");
+                return;
+            }
+        }
+        throw new MemberNotFoundException("Member with ID " + memberId + " not found.");
+
+    }
 
     @Override
     public List<Member> getMembers()
@@ -169,7 +199,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                 .orElseThrow(() -> new MemberNotFoundException("Member not found"));
 
         boolean isSpecialMember = member.isSpecialMember();
-        System.out.println("Available vehicles for " + (isSpecialMember ? "special" : "regular") + " member:");
+        System.out.println("Available vehicles for " + (isSpecialMember ? "premium (10% Discount applied)" : "regular") + " member:");
 
         vehicles.stream()
                 .filter(Vehicle::isAvailable)
@@ -178,8 +208,8 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                     if (isSpecialMember) {
                         price *= 0.9;
                     }
-                    System.out.printf("%s - Type: %s, Price: $%.2f per day%n",
-                            v.getVehicleNumber(), v.getVehicleType(), price);
+                    System.out.printf("%s - Type: %s, Model: -%s, Price: Rs.%.2f per day%n",
+                            v.getVehicleNumber(),v.getVehicleType(), v.getVehicleModel(), price);
                 });
     }
 
