@@ -153,21 +153,6 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         return filteredMembers;
     }
 
-//    @Override
-//    public void filterMembers(String memberType)
-//    {
-//        System.out.println("Special Members:");
-//        members.stream()
-//                .filter(Member::isSpecialMember)
-//                .collect(Collectors.toList());
-//
-//
-//        System.out.println("Non-Special Members:");
-//        members.stream()
-//                .filter(member -> !member.isSpecialMember())
-//                .collect(Collectors.toList());
-//    }
-
 
     // Rental process
     public void rentVehicle(Vehicle vehicle, Member member, int rentalDuration) throws VehicleNotAvailableException
