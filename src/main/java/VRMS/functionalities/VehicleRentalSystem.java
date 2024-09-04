@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class VehicleRentalSystem implements VehicleInterface, MemberInterface
 {
     private List<Vehicle> vehicles;
@@ -78,7 +79,6 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
             System.out.println("Vehicles of type " + vehicleType + ":");
             filteredVehicles.forEach(System.out::println);
         }
-
         return filteredVehicles;
     }
 
@@ -135,22 +135,22 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
             throw new MemberNotFoundException("No members found in the system.");
         }
 
-        if (memberType.equalsIgnoreCase("special")) {
+        if (memberType.equalsIgnoreCase("Premium")) {
             filteredMembers = members.stream()
                     .filter(Member::isSpecialMember)
                     .collect(Collectors.toList());
             if (filteredMembers.isEmpty()) {
                 throw new MemberNotFoundException("No special members found.");
             }
-            System.out.println("Special Members:");
+            System.out.println("Premium Members:");
         } else if (memberType.equalsIgnoreCase("regular")) {
             filteredMembers = members.stream()
                     .filter(member -> !member.isSpecialMember())
                     .collect(Collectors.toList());
             if (filteredMembers.isEmpty()) {
-                throw new MemberNotFoundException("No non-special members found.");
+                throw new MemberNotFoundException("No regular members found.");
             }
-            System.out.println("Non-Special Members:");
+            System.out.println("Regular Members:");
         } else {
             filteredMembers = new ArrayList<>(members);
             System.out.println("All Members:");
@@ -205,14 +205,23 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         rentalTransactions.add(transaction);
         vehicle.setAvailable(false);
 
-        System.out.printf("Vehicle %s rented to member %s for %d days at $%.2f per day%n",
+        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day%n",
                 vehicleNumber, memberId, rentalDuration, rentalPrice);
     }
 
+    public String generateTransactionID() {
+        int lastTransactionID = 0;
+        lastTransactionID++;
+        return "TRANS" + String.format("%04d", lastTransactionID);
+    }
 
-
-    public void viewRentalTransactions() {
+    public void viewRentalTransactions()
+    {
+        if (rentalTransactions.isEmpty()) {
+            throw new IllegalStateException("No transactions available. The transaction list is empty.");
+        }
             for (RentalTransaction transaction : rentalTransactions) {
+                System.out.println("Transaction ID: " + generateTransactionID());
                 System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
                 System.out.println("Member: " + transaction.getMember().getMemberId());
                 System.out.println("Rental Price: " + transaction.getRentalPrice());
@@ -221,7 +230,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
             }
         }
 
-        public void saveRentalTransactions() {
+    public void saveRentalTransactions() {
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("rental_transactions.dat"))) {
                 oos.writeObject(rentalTransactions);
                 System.out.println("Rental transactions saved successfully");
@@ -238,6 +247,4 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                 System.out.println("Error loading rental transactions: " + e.getMessage());
             }
         }
-
-
 }

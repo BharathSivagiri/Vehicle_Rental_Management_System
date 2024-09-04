@@ -7,12 +7,21 @@ public class RentalTransaction implements Serializable {
     private Member member;
     private double rentalPrice;
     private int rentalDuration;
+    private String transactionID;
+
+    private int lastTransactionID = 0;
 
     public RentalTransaction(Vehicle vehicle, Member member, double rentalPrice, int rentalDuration) {
+        this.transactionID = generateTransactionID();
         this.vehicle = vehicle;
         this.member = member;
         this.rentalPrice = rentalPrice;
         this.rentalDuration = rentalDuration;
+    }
+
+    public String generateTransactionID()
+    {
+        return String.valueOf(lastTransactionID++);
     }
 
     // Getters and Setters
@@ -46,5 +55,10 @@ public class RentalTransaction implements Serializable {
 
     public void setRentalDuration(int rentalDuration) {
         this.rentalDuration = rentalDuration;
+    }
+
+
+    public String getTransactionID() {
+        return transactionID;
     }
 }

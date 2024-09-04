@@ -157,7 +157,14 @@ public class VehicleRentalManagementSystem
                     break;
                 case 10:
                     // View transactions
-                    vehicleRentalSystem.viewRentalTransactions();
+                    try
+                    {
+                        vehicleRentalSystem.viewRentalTransactions();
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("No transactions available. The transaction list is empty.");
+                    }
                     break;
                 case 11:
                     // Save transactions
