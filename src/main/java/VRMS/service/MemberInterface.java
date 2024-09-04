@@ -11,9 +11,9 @@ public interface MemberInterface
     // CRUD operations for members
     void addMember(Member member) throws DuplicateMemberException;
 
-    void removeMember(Member member) throws MemberNotFoundException;
+    void removeMember(String MemberId) throws MemberNotFoundException;
 
     List<Member> getMembers();
 
-    List<Member> filterMembers(String memberType);
+    List<Member> filterMembers(String memberType) throws MemberNotFoundException;
 }

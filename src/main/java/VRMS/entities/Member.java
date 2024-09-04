@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class Member implements Serializable {
     private String memberName;
     private String memberId;
-    private String email;
-    private String phoneNumber;
+    private String memberPhone;
+    private String memberEmail;
     private boolean isSpecialMember;
 
     public Member(String memberName, String memberId, String email, String phoneNumber, boolean isSpecialMember) {
         this.memberName = memberName;
         this.memberId = memberId;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.memberPhone = memberPhone;
+        this.memberEmail = memberEmail;
         this.isSpecialMember = isSpecialMember;
     }
 
@@ -33,20 +33,20 @@ public class Member implements Serializable {
         this.memberId = memberId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getMemberPhone() {
+        return memberPhone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setMemberPhone(String memberPhone) {
+        this.memberPhone = memberPhone;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getMemberEmail() {
+        return memberEmail;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setMemberEmail(String memberEmail) {
+        this.memberEmail = memberEmail;
     }
 
     public boolean isSpecialMember() {
@@ -62,8 +62,8 @@ public class Member implements Serializable {
         return "Member List [" +
                 "memberName='" + memberName + '\'' +
                 ", memberId='" + memberId + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", memberPhone='" + memberPhone + '\'' +
+                ", memberEmail='" + memberEmail + '\'' +
                 ", isSpecialMember=" + isSpecialMember +
                 ']';
     }

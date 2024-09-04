@@ -82,8 +82,6 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         return filteredVehicles;
     }
 
-
-
     // CRUD operations for members
     @Override
     public void addMember(Member member) throws DuplicateMemberException
@@ -97,14 +95,16 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
     }
 
     @Override
-    public void removeMember(Member member) throws MemberNotFoundException
+    public void removeMember(String memberId) throws MemberNotFoundException
     {
-        if (!members.contains(member))
-        {
-            throw new MemberNotFoundException("Member not found");
+        boolean removed = members.removeIf(member -> member.getMemberId().equals(memberId));
+        if (removed) {
+            System.out.println("Member with ID " + memberId + " has been removed successfully.");
+        } else {
+            throw new MemberNotFoundException("Member with ID " + memberId + " not found");
         }
-        members.remove(member);
     }
+
 
     @Override
     public List<Member> getMembers()
@@ -127,50 +127,91 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
     }
 
     @Override
-    public List<Member> filterMembers(String memberType)
+    public List<Member> filterMembers(String memberType) throws MemberNotFoundException
     {
         List<Member> filteredMembers;
-        if (memberType.equalsIgnoreCase("special"))
-        {
+
+        if (members.isEmpty()) {
+            throw new MemberNotFoundException("No members found in the system.");
+        }
+
+        if (memberType.equalsIgnoreCase("special")) {
             filteredMembers = members.stream()
                     .filter(Member::isSpecialMember)
                     .collect(Collectors.toList());
+            if (filteredMembers.isEmpty()) {
+                throw new MemberNotFoundException("No special members found.");
+            }
             System.out.println("Special Members:");
-        }
-        else if (memberType.equalsIgnoreCase("non-special"))
-        {
+        } else if (memberType.equalsIgnoreCase("regular")) {
             filteredMembers = members.stream()
                     .filter(member -> !member.isSpecialMember())
                     .collect(Collectors.toList());
+            if (filteredMembers.isEmpty()) {
+                throw new MemberNotFoundException("No non-special members found.");
+            }
             System.out.println("Non-Special Members:");
-        }
-        else
-        {
+        } else {
             filteredMembers = new ArrayList<>(members);
             System.out.println("All Members:");
         }
+
         filteredMembers.forEach(System.out::println);
         return filteredMembers;
     }
 
 
     // Rental process
-    public void rentVehicle(Vehicle vehicle, Member member, int rentalDuration) throws VehicleNotAvailableException
-    {
-        if (!vehicle.isAvailable())
-        {
-            throw new VehicleNotAvailableException("Vehicle is not available");
-        }
+    public void displayAvailableVehicles(String memberId) throws MemberNotFoundException {
+        Member member = members.stream()
+                .filter(m -> m.getMemberId().equals(memberId))
+                .findFirst()
+                .orElseThrow(() -> new MemberNotFoundException("Member not found"));
+
+        boolean isSpecialMember = member.isSpecialMember();
+        System.out.println("Available vehicles for " + (isSpecialMember ? "special" : "regular") + " member:");
+
+        vehicles.stream()
+                .filter(Vehicle::isAvailable)
+                .forEach(v -> {
+                    double price = v.getRentalPrice();
+                    if (isSpecialMember) {
+                        price *= 0.9;
+                    }
+                    System.out.printf("%s - Type: %s, Price: $%.2f per day%n",
+                            v.getVehicleNumber(), v.getVehicleType(), price);
+                });
+    }
+
+    public void rentVehicle(String memberId, String vehicleNumber, int rentalDuration) throws VehicleNotAvailableException, MemberNotFoundException, VehicleNotFoundException {
+        Member member = members.stream()
+                .filter(m -> m.getMemberId().equals(memberId))
+                .findFirst()
+                .orElseThrow(() -> new MemberNotFoundException("Member not found"));
+
+        displayAvailableVehicles(memberId);
+
+        Vehicle vehicle = vehicles.stream()
+                .filter(v -> v.getVehicleNumber().equals(vehicleNumber) && v.isAvailable())
+                .findFirst()
+                .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found or not available"));
+
         double rentalPrice = vehicle.getRentalPrice();
         if (member.isSpecialMember()) {
             rentalPrice *= 0.9;
         }
+
         RentalTransaction transaction = new RentalTransaction(vehicle, member, rentalPrice, rentalDuration);
         rentalTransactions.add(transaction);
         vehicle.setAvailable(false);
+
+        System.out.printf("Vehicle %s rented to member %s for %d days at $%.2f per day%n",
+                vehicleNumber, memberId, rentalDuration, rentalPrice);
     }
 
-        public void viewRentalTransactions() {
+
+
+    public void viewRentalTransactions() {
             for (RentalTransaction transaction : rentalTransactions) {
                 System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
                 System.out.println("Member: " + transaction.getMember().getMemberId());
@@ -197,5 +238,6 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                 System.out.println("Error loading rental transactions: " + e.getMessage());
             }
         }
+
 
 }
