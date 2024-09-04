@@ -9,7 +9,7 @@ public class Vehicle implements Serializable {
     private double rentalPrice;
     private boolean isAvailable;
 
-    public Vehicle(String vehicleNumber, String vehicleType, String vehicleModel, double rentalPrice) {
+    public Vehicle(String vehicleNumber, String vehicleType, String vehicleModel, double rentalPrice, boolean b) {
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
         this.vehicleModel = vehicleModel;

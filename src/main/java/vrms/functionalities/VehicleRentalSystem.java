@@ -26,7 +26,23 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         this.rentalTransactions = new ArrayList<>();
     }
 
+    public void initialData()
+    {
+        vehicles.add(new Vehicle("TN-33-AS-2452", "Car", "Sedan", 1000, true));
+        vehicles.add(new Vehicle("TN-33-BK-7891", "Bike", "Sports", 500, true));
+        vehicles.add(new Vehicle("TN-33-CL-4567", "Truck", "Pickup", 1500, true));
+        vehicles.add(new Vehicle("TN-33-DM-2345", "Car", "SUV", 1200, true));
+        vehicles.add(new Vehicle("TN-33-GH-6789", "Bike", "Cruiser", 600, true));
+
+        members.add(new Member("SM001", "John", "john@example.com", "9876543210", true));
+        members.add(new Member("NM002", "Smith", "jane@example.com", "9762899934",false));
+        members.add(new Member("SM003", "Bob", "bob@example.com", "8524133625",true));
+        members.add(new Member("NM004", "Alice", "alice@example.com", "7741522581",false));
+        members.add(new Member("SM005", "Charlie", "charlie@example.com", "9952144589",true));
+    }
+
     // CRUD operations for vehicles
+
     @Override
     public void addVehicle(Vehicle vehicle) throws DuplicateVehicleException
     {
@@ -102,6 +118,11 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
     @Override
     public void addMember(Member member) throws DuplicateMemberException
     {
+        addMember(new Member("SM001", "John", "john@example.com", "9876543210", true));
+        addMember(new Member("NM002", "Smith", "jane@example.com", "9762899934",false));
+        addMember(new Member("SM003", "Bob", "bob@example.com", "8524133625",true));
+        addMember(new Member("NM004", "Alice", "alice@example.com", "7741522581",false));
+        addMember(new Member("SM005", "Charlie", "charlie@example.com", "9952144589",true));
         if (members.stream().anyMatch(m -> m.getMemberId()
                 .equals(member.getMemberId())))
         {

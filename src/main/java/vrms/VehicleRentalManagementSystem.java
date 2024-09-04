@@ -12,6 +12,7 @@ public class VehicleRentalManagementSystem
     public static void main(String[] args)
     {
         VehicleRentalSystem vehicleRentalSystem = new VehicleRentalSystem();
+        vehicleRentalSystem.initialData();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -56,7 +57,7 @@ public class VehicleRentalManagementSystem
                     String memberEmail = scanner.next();
                     System.out.print("Premium Member? (true/false): ");
                     boolean isSpecialMember = scanner.nextBoolean();
-                    Member member = new Member(memberName, memberId, memberEmail, memberPhone, isSpecialMember);
+                    Member member = new Member(memberName,memberId, memberEmail, memberPhone, isSpecialMember);
                     try
                     {
                         vehicleRentalSystem.addMember(member);
@@ -125,7 +126,7 @@ public class VehicleRentalManagementSystem
                     String vehicleModel = scanner.next();
                     System.out.print("Enter vehicle rental price: ");
                     double vehicleRentalPrice = scanner.nextDouble();
-                    Vehicle vehicle = new Vehicle(vehicleNumber, vehicleType, vehicleModel, vehicleRentalPrice);
+                    Vehicle vehicle = new Vehicle(vehicleNumber, vehicleType, vehicleModel, vehicleRentalPrice, true);
                     try
                     {
                         vehicleRentalSystem.addVehicle(vehicle);
@@ -141,7 +142,7 @@ public class VehicleRentalManagementSystem
                     System.out.println("Enter vehicle details:");
                     System.out.print("Enter vehicle number: ");
                     String vehicleNumberToRemove = scanner.next();
-                    Vehicle vehicleToRemove = new Vehicle(vehicleNumberToRemove, "", "", 0.0);
+                    Vehicle vehicleToRemove = new Vehicle(vehicleNumberToRemove, "", "", 0.0, true);
                     try {
                         vehicleRentalSystem.removeVehicle(vehicleToRemove);
                     } catch (VehicleNotFoundException e) {
@@ -169,7 +170,7 @@ public class VehicleRentalManagementSystem
                     String newVehicleModel = scanner.next();
                     System.out.print("Enter new vehicle rental price: ");
                     double newVehicleRentalPrice = scanner.nextDouble();
-                    Vehicle updatedVehicle = new Vehicle(vehicleNumberToUpdate, newVehicleType, newVehicleModel, newVehicleRentalPrice);
+                    Vehicle updatedVehicle = new Vehicle(vehicleNumberToUpdate, newVehicleType, newVehicleModel, newVehicleRentalPrice, true);
                     try {
                         vehicleRentalSystem.updateVehicle(updatedVehicle);
                     } catch (VehicleNotFoundException e) {
