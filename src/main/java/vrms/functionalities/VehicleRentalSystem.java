@@ -10,6 +10,7 @@ import vrms.service.VehicleInterface;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
@@ -21,7 +22,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     int lastTransactionID = 0;
 
     @Serial
-    private static long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     public VehicleRentalSystem() {
         this.vehicles = new ArrayList<>();
@@ -218,8 +219,13 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         boolean isSpecialMember = member.isSpecialMember();
         System.out.println("Available vehicles for " + (isSpecialMember ? "premium (10% Discount applied)" : "regular") + " member:");
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the vehicle type you're looking for: ");
+        String desiredVehicleType = scanner.nextLine().trim().toLowerCase();
+
         vehicles.stream()
                 .filter(Vehicle::isAvailable)
+                .filter(v -> v.getVehicleType().toLowerCase().equals(desiredVehicleType))
                 .forEach(v -> {
                     double price = v.getRentalPrice();
                     if (isSpecialMember) {
@@ -290,8 +296,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
 
     public void saveRentalTransactions()
     {
-        serialVersionUID = 1L;
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.txt"))) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.ser"))) {
                 oos.writeObject(rentalTransactions);
                 System.out.println("Rental transactions saved successfully");
             } catch (IOException e) {
@@ -301,8 +306,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
 
     public void loadRentalTransactions()
     {
-        serialVersionUID = 1L;
-        String filePath = "D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.txt";
+        String filePath = "D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.ser";
         try {
             FileInputStream fis = new FileInputStream(filePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -310,9 +314,11 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
             ois.close();
             fis.close();
             System.out.println("Rental transactions loaded successfully");
+            for (RentalTransaction transaction : rentalTransactions) {
+                System.out.println(transaction);
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading rental transactions: " + e.getMessage());
         }
     }
-
 }
