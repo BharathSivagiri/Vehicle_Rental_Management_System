@@ -113,16 +113,10 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
         return filteredVehicles;
     }
 
-
     // CRUD operations for members
     @Override
-    public void addMember(Member member) throws DuplicateMemberException
+    public void addMember(Member member) throws DuplicateMemberException, InputException
     {
-        addMember(new Member("SM001", "John", "john@example.com", "9876543210", true));
-        addMember(new Member("NM002", "Smith", "jane@example.com", "9762899934",false));
-        addMember(new Member("SM003", "Bob", "bob@example.com", "8524133625",true));
-        addMember(new Member("NM004", "Alice", "alice@example.com", "7741522581",false));
-        addMember(new Member("SM005", "Charlie", "charlie@example.com", "9952144589",true));
         if (members.stream().anyMatch(m -> m.getMemberId()
                 .equals(member.getMemberId())))
         {

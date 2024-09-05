@@ -6,11 +6,15 @@ import vrms.exceptions.*;
 import vrms.functionalities.VehicleRentalSystem;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class VehicleRentalManagementSystem
 {
-    public static void main(String[] args)
-    {
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{10}$");
+
+    public static void main(String[] args) {
         VehicleRentalSystem vehicleRentalSystem = new VehicleRentalSystem();
         vehicleRentalSystem.initialData();
         Scanner scanner = new Scanner(System.in);
@@ -46,18 +50,43 @@ public class VehicleRentalManagementSystem
                 // Customer Operations
                 case 1:
                     // Add member
+
                     System.out.println("Enter member details:");
-                    System.out.print("Enter member name: ");
-                    String memberName = scanner.next();
+
+                    String memberName;
+                    do {
+                        System.out.print("Enter member name: ");
+                        memberName = scanner.next();
+                        if (!NAME_PATTERN.matcher(memberName).matches()) {
+                            System.out.println("Invalid name format");
+                        }
+                    } while(!NAME_PATTERN.matcher(memberName).matches());
+
                     System.out.print("Enter member ID: ");
                     String memberId = scanner.next();
-                    System.out.print("Enter member phone: ");
-                    String memberPhone = scanner.next();
-                    System.out.print("Enter member email: ");
-                    String memberEmail = scanner.next();
+
+                    String memberPhone;
+                    do {
+                        System.out.print("Enter member phone: ");
+                        memberPhone = scanner.next();
+                        if (!PHONE_PATTERN.matcher(memberPhone).matches()) {
+                            System.out.println("Invalid phone number format");
+                            break;
+                        }
+                    }while(!PHONE_PATTERN.matcher(memberPhone).matches());
+
+                    String memberEmail;
+                    do {
+                        System.out.print("Enter member email: ");
+                        memberEmail = scanner.next();
+                        if (!EMAIL_PATTERN.matcher(memberEmail).matches()) {
+                            System.out.println("Invalid email format");
+                            break;
+                        }
+                    }while (!EMAIL_PATTERN.matcher(memberEmail).matches());
                     System.out.print("Premium Member? (true/false): ");
                     boolean isSpecialMember = scanner.nextBoolean();
-                    Member member = new Member(memberName,memberId, memberEmail, memberPhone, isSpecialMember);
+                    Member member = new Member(memberId,memberName, memberEmail, memberPhone, isSpecialMember);
                     try
                     {
                         vehicleRentalSystem.addMember(member);
@@ -66,6 +95,10 @@ public class VehicleRentalManagementSystem
                     catch (DuplicateMemberException e)
                     {
                         System.out.println("Duplicate member found");
+                    }
+                    catch (InputException e)
+                    {
+                        System.out.println("Error: ");
                     }
                     break;
                 case 2:

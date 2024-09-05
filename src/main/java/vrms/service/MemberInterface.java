@@ -2,6 +2,7 @@ package vrms.service;
 
 import vrms.entities.Member;
 import vrms.exceptions.DuplicateMemberException;
+import vrms.exceptions.InputException;
 import vrms.exceptions.MemberNotFoundException;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface MemberInterface
 {
     // CRUD operations for members
-    void addMember(Member member) throws DuplicateMemberException;
+    void addMember(Member member) throws DuplicateMemberException, InputException;
 
     void removeMember(String MemberId) throws MemberNotFoundException;
 
