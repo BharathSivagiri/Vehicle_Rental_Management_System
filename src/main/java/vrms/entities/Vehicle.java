@@ -7,14 +7,14 @@ public class Vehicle implements Serializable {
     private String vehicleType;
     private String vehicleModel;
     private double rentalPrice;
-    private boolean isAvailable;
+    private VehicleStatus status;
 
-    public Vehicle(String vehicleNumber, String vehicleType, String vehicleModel, double rentalPrice, boolean b) {
+    public Vehicle(String vehicleNumber, String vehicleType, String vehicleModel, double rentalPrice, VehicleStatus status) {
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
         this.vehicleModel = vehicleModel;
         this.rentalPrice = rentalPrice;
-        this.isAvailable = true;
+        this.status = status;
     }
 
     public String getVehicleNumber() {
@@ -49,12 +49,19 @@ public class Vehicle implements Serializable {
         this.rentalPrice = rentalPrice;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public void setAvailable(boolean available) {
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public VehicleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VehicleStatus status) {
+        this.status = status;
+    }
+
+    public boolean isAvailable() {
+        return status == VehicleStatus.AVAILABLE;
     }
 
     @Override
@@ -64,6 +71,6 @@ public class Vehicle implements Serializable {
                 ", Type = '" + vehicleType + '\'' +
                 ", Model = '" + vehicleModel + '\'' +
                 ", Rental price per day = " + rentalPrice +
-                ", Available or Not = " + isAvailable;
+                ", Available or Not = " + status;
     }
 }

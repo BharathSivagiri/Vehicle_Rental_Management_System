@@ -3,6 +3,7 @@ package vrms.functionalities;
 import vrms.entities.Member;
 import vrms.entities.RentalTransaction;
 import vrms.entities.Vehicle;
+import vrms.entities.VehicleStatus;
 import vrms.exceptions.*;
 import vrms.service.MemberInterface;
 import vrms.service.VehicleInterface;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static vrms.entities.VehicleStatus.AVAILABLE;
+import static vrms.entities.VehicleStatus.RENTED;
 
 
 public class VehicleRentalSystem implements VehicleInterface, MemberInterface, Serializable
@@ -32,11 +36,11 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
 
     public void initialData()
     {
-        vehicles.add(new Vehicle("TN-33-AS-2452", "Car", "Sedan", 1000, true));
-        vehicles.add(new Vehicle("TN-33-BK-7891", "Bike", "Sports", 500, true));
-        vehicles.add(new Vehicle("TN-33-CL-4567", "Truck", "Pickup", 1500, true));
-        vehicles.add(new Vehicle("TN-33-DM-2345", "Car", "SUV", 1200, true));
-        vehicles.add(new Vehicle("TN-33-GH-6789", "Bike", "Cruiser", 600, true));
+        vehicles.add(new Vehicle("TN-33-AS-2452", "Car", "Sedan", 1000, VehicleStatus.AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-BK-7891", "Bike", "Sports", 500, VehicleStatus.AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-CL-4567", "Truck", "Pickup", 1500, VehicleStatus.AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-DM-2345", "Car", "SUV", 1200, VehicleStatus.AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-GH-6789", "Bike", "Cruiser", 600, VehicleStatus.AVAILABLE));
 
         members.add(new Member("SM001", "John", "john@example.com", "9876543210", true));
         members.add(new Member("NM002", "Smith", "jane@example.com", "9762899934",false));
@@ -224,7 +228,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         String desiredVehicleType = scanner.nextLine().trim().toLowerCase();
 
         vehicles.stream()
-                .filter(Vehicle::isAvailable)
+                .filter(v -> v.getStatus()==VehicleStatus.AVAILABLE)
                 .filter(v -> v.getVehicleType().toLowerCase().equals(desiredVehicleType))
                 .forEach(v -> {
                     double price = v.getRentalPrice();
@@ -243,13 +247,14 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
                 .orElseThrow(() -> new MemberNotFoundException("Member not found"));
 
         Vehicle vehicle = vehicles.stream()
-                .filter(v -> v.getVehicleNumber().equals(vehicleNumber) && v.isAvailable())
+                .filter(v -> v.getVehicleNumber().equals(vehicleNumber) && v.getStatus() == VehicleStatus.AVAILABLE)
                 .findFirst()
                 .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
 
-        if (!vehicle.isAvailable()) {
+        if (vehicle.getStatus() != AVAILABLE) {
             throw new VehicleNotAvailableException("Vehicle is not available for rent");
         }
+        vehicle.setStatus(RENTED);
 
         members.stream()
                 .filter(m -> m.getMemberId().equals(memberId))

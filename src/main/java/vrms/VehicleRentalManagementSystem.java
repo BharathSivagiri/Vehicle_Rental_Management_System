@@ -8,6 +8,8 @@ import vrms.functionalities.VehicleRentalSystem;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import static vrms.entities.VehicleStatus.AVAILABLE;
+
 public class VehicleRentalManagementSystem
 {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
@@ -159,7 +161,7 @@ public class VehicleRentalManagementSystem
                     String vehicleModel = scanner.next();
                     System.out.print("Enter vehicle rental price: ");
                     double vehicleRentalPrice = scanner.nextDouble();
-                    Vehicle vehicle = new Vehicle(vehicleNumber, vehicleType, vehicleModel, vehicleRentalPrice, true);
+                    Vehicle vehicle = new Vehicle(vehicleNumber, vehicleType, vehicleModel, vehicleRentalPrice, AVAILABLE);
                     try
                     {
                         vehicleRentalSystem.addVehicle(vehicle);
@@ -175,7 +177,7 @@ public class VehicleRentalManagementSystem
                     System.out.println("Enter vehicle details:");
                     System.out.print("Enter vehicle number: ");
                     String vehicleNumberToRemove = scanner.next();
-                    Vehicle vehicleToRemove = new Vehicle(vehicleNumberToRemove, "", "", 0.0, true);
+                    Vehicle vehicleToRemove = new Vehicle(vehicleNumberToRemove, "", "", 0.0, AVAILABLE);
                     try {
                         vehicleRentalSystem.removeVehicle(vehicleToRemove);
                     } catch (VehicleNotFoundException e) {
@@ -203,7 +205,7 @@ public class VehicleRentalManagementSystem
                     String newVehicleModel = scanner.next();
                     System.out.print("Enter new vehicle rental price: ");
                     double newVehicleRentalPrice = scanner.nextDouble();
-                    Vehicle updatedVehicle = new Vehicle(vehicleNumberToUpdate, newVehicleType, newVehicleModel, newVehicleRentalPrice, true);
+                    Vehicle updatedVehicle = new Vehicle(vehicleNumberToUpdate, newVehicleType, newVehicleModel, newVehicleRentalPrice, AVAILABLE);
                     try {
                         vehicleRentalSystem.updateVehicle(updatedVehicle);
                     } catch (VehicleNotFoundException e) {
