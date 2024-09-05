@@ -15,6 +15,7 @@ public class VehicleRentalManagementSystem
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{10}$");
+    private static final Pattern MEMBERID_PATTERN = Pattern.compile("^[SN]M\\d{3}$");
 
     public static void main(String[] args) {
         VehicleRentalSystem vehicleRentalSystem = new VehicleRentalSystem();
@@ -53,7 +54,7 @@ public class VehicleRentalManagementSystem
                 case 1:
                     // Add member
 
-                    System.out.println("Enter member details:");
+                    System.out.println("Enter member details");
 
                     String memberName;
                     do {
@@ -64,8 +65,14 @@ public class VehicleRentalManagementSystem
                         }
                     } while(!NAME_PATTERN.matcher(memberName).matches());
 
-                    System.out.print("Enter member ID: ");
-                    String memberId = scanner.next();
+                    String memberId;
+                    do {
+                        System.out.print("Enter member ID: ");
+                        memberId = scanner.next();
+                        if (!MEMBERID_PATTERN.matcher(memberId).matches()) {
+                            System.out.println("Invalid member ID format");
+                        }
+                    } while(!MEMBERID_PATTERN.matcher(memberId).matches());
 
                     String memberPhone;
                     do {
@@ -73,9 +80,8 @@ public class VehicleRentalManagementSystem
                         memberPhone = scanner.next();
                         if (!PHONE_PATTERN.matcher(memberPhone).matches()) {
                             System.out.println("Invalid phone number format");
-                            break;
                         }
-                    }while(!PHONE_PATTERN.matcher(memberPhone).matches());
+                    } while(!PHONE_PATTERN.matcher(memberPhone).matches());
 
                     String memberEmail;
                     do {
@@ -83,9 +89,9 @@ public class VehicleRentalManagementSystem
                         memberEmail = scanner.next();
                         if (!EMAIL_PATTERN.matcher(memberEmail).matches()) {
                             System.out.println("Invalid email format");
-                            break;
                         }
-                    }while (!EMAIL_PATTERN.matcher(memberEmail).matches());
+                    } while (!EMAIL_PATTERN.matcher(memberEmail).matches());
+
                     System.out.print("Premium Member? (true/false): ");
                     boolean isSpecialMember = scanner.nextBoolean();
                     Member member = new Member(memberId,memberName, memberEmail, memberPhone, isSpecialMember);
