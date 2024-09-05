@@ -133,6 +133,7 @@ public class VehicleRentalManagementSystem
                     } catch (MemberNotFoundException e) {
                         System.out.println("Error: " + e.getMessage());
                     }
+                    System.out.println("List Fetched successfully");
                     break;
                 case 5:
                     // Update member
