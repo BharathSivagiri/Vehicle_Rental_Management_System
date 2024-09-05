@@ -227,10 +227,14 @@ public class VehicleRentalManagementSystem
                         int rentalDuration = scanner.nextInt();
 
                         vehicleRentalSystem.rentVehicle(memberIdToRent, vehicleNumberToRent, rentalDuration);
-                    } catch (MemberNotFoundException | VehicleNotFoundException e) {
-                        System.out.println("Error: " + e.getMessage());
+                    } catch (MemberNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    } catch (VehicleNotFoundException e) {
+                        System.out.println(e.getMessage());
                     } catch (VehicleNotAvailableException e) {
-                        System.out.println("Error: " + e.getMessage());
+                        System.out.println(e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Error: An unexpected error occurred");
                     }
                     break;
                 case 12:

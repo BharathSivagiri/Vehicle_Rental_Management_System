@@ -61,4 +61,9 @@ public class RentalTransaction implements Serializable {
     public String getTransactionID() {
         return transactionID;
     }
+
+    public String getTotalRentalCost()
+    {
+        return String.valueOf(rentalPrice * rentalDuration);
+    }
 }

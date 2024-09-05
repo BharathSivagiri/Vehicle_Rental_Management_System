@@ -13,12 +13,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class VehicleRentalSystem implements VehicleInterface, MemberInterface
+public class VehicleRentalSystem implements VehicleInterface, MemberInterface, Serializable
 {
     private final List<Vehicle> vehicles;
     private final List<Member> members;
     private List<RentalTransaction> rentalTransactions;
     int lastTransactionID = 0;
+
+    @Serial
+    private static long serialVersionUID = 1L;
 
     public VehicleRentalSystem() {
         this.vehicles = new ArrayList<>();
@@ -233,12 +236,20 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                 .findFirst()
                 .orElseThrow(() -> new MemberNotFoundException("Member not found"));
 
-        displayAvailableVehicles(memberId);
-
         Vehicle vehicle = vehicles.stream()
                 .filter(v -> v.getVehicleNumber().equals(vehicleNumber) && v.isAvailable())
                 .findFirst()
-                .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found or not available"));
+                .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
+
+        if (!vehicle.isAvailable()) {
+            throw new VehicleNotAvailableException("Vehicle is not available for rent");
+        }
+
+        members.stream()
+                .filter(m -> m.getMemberId().equals(memberId))
+                .findFirst()
+                .orElseThrow(() -> new MemberNotFoundException("Member not found"));
+
 
         double rentalPrice = vehicle.getRentalPrice();
         if (member.isSpecialMember()) {
@@ -271,14 +282,16 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
                 System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
                 System.out.println("Member: " + transaction.getMember().getMemberId());
                 System.out.println("Rental Price per day: " + transaction.getRentalPrice());
-//                System.out.println("Total Rental Cost: " + transaction.getTotalRentalCost());
+                System.out.println("Total Rental Cost: " + transaction.getTotalRentalCost());
                 System.out.println("Rental Duration: " + transaction.getRentalDuration());
                 System.out.println();
             }
         }
 
-    public void saveRentalTransactions() {
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("rental_transactions.txt"))) {
+    public void saveRentalTransactions()
+    {
+        serialVersionUID = 1L;
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.txt"))) {
                 oos.writeObject(rentalTransactions);
                 System.out.println("Rental transactions saved successfully");
             } catch (IOException e) {
@@ -286,12 +299,20 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface
             }
         }
 
-        public void loadRentalTransactions() {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("rental_transactions.txt"))) {
-                rentalTransactions = (List<RentalTransaction>) ois.readObject();
-                System.out.println("Rental transactions loaded successfully");
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Error loading rental transactions: " + e.getMessage());
-            }
+    public void loadRentalTransactions()
+    {
+        serialVersionUID = 1L;
+        String filePath = "D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.txt";
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            rentalTransactions = (List<RentalTransaction>) ois.readObject();
+            ois.close();
+            fis.close();
+            System.out.println("Rental transactions loaded successfully");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading rental transactions: " + e.getMessage());
         }
+    }
+
 }
