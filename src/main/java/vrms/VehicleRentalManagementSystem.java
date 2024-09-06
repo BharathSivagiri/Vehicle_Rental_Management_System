@@ -223,28 +223,29 @@ public class VehicleRentalManagementSystem
                 // Rental Operations
                 case 11:
                     // Rent vehicle
-                    System.out.print("Enter member ID: ");
-                    String memberIdToRent = scanner.next();
+                    boolean rentAgain = true;
+                    do {
 
-                    try {
-                        vehicleRentalSystem.displayAvailableVehicles(memberIdToRent);
+                        try {System.out.print("Enter member ID: ");
+                            String memberIdToRent = scanner.next();
+                            vehicleRentalSystem.displayAvailableVehicles(memberIdToRent);
 
-                        System.out.print("Enter vehicle number to rent: ");
-                        String vehicleNumberToRent = scanner.next();
+                            System.out.print("Enter vehicle number to rent: ");
+                            String vehicleNumberToRent = scanner.next();
 
-                        System.out.print("Enter rental duration (in days): ");
-                        int rentalDuration = scanner.nextInt();
+                            System.out.print("Enter rental duration (in days): ");
+                            int rentalDuration = scanner.nextInt();
 
-                        vehicleRentalSystem.rentVehicle(memberIdToRent, vehicleNumberToRent, rentalDuration);
-                    } catch (MemberNotFoundException e) {
-                        System.out.println(e.getMessage());
-                    } catch (VehicleNotFoundException e) {
-                        System.out.println(e.getMessage());
-                    } catch (VehicleNotAvailableException e) {
-                        System.out.println(e.getMessage());
-                    } catch (Exception e) {
-                        System.out.println("Error: An unexpected error occurred");
-                    }
+                            vehicleRentalSystem.rentVehicle(memberIdToRent, vehicleNumberToRent, rentalDuration);
+
+                            System.out.print("Do you want to rent another vehicle? (true/false): ");
+                            rentAgain = scanner.nextBoolean();
+                        } catch (MemberNotFoundException | VehicleNotFoundException | VehicleNotAvailableException e) {
+                            System.out.println(e.getMessage());
+                        } catch (Exception e) {
+                            System.out.println("Error: Try Again");
+                        }
+                    } while(rentAgain);
                     break;
                 case 12:
                     // View transactions
@@ -270,5 +271,4 @@ public class VehicleRentalManagementSystem
                     System.out.println("Invalid choice");
             }
         }
-    }
-}
+    }}

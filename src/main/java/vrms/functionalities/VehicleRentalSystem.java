@@ -18,12 +18,12 @@ import static vrms.entities.VehicleStatus.AVAILABLE;
 import static vrms.entities.VehicleStatus.RENTED;
 
 
-public class VehicleRentalSystem implements VehicleInterface, MemberInterface, Serializable
-{
+public class VehicleRentalSystem implements VehicleInterface, MemberInterface, Serializable {
     private final List<Vehicle> vehicles;
     private final List<Member> members;
     private List<RentalTransaction> rentalTransactions;
     int lastTransactionID = 0;
+    private static final String TRANSAC_PATH = "D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.txt";
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -34,8 +34,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         this.rentalTransactions = new ArrayList<>();
     }
 
-    public void initialData()
-    {
+    public void initialData() {
         vehicles.add(new Vehicle("TN-33-AS-2452", "Car", "Sedan", 1000, VehicleStatus.AVAILABLE));
         vehicles.add(new Vehicle("TN-33-BK-7891", "Bike", "Sports", 500, VehicleStatus.AVAILABLE));
         vehicles.add(new Vehicle("TN-33-CL-4567", "Truck", "Pickup", 1500, VehicleStatus.AVAILABLE));
@@ -43,41 +42,35 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         vehicles.add(new Vehicle("TN-33-GH-6789", "Bike", "Cruiser", 600, VehicleStatus.AVAILABLE));
 
         members.add(new Member("SM001", "John", "john@example.com", "9876543210", true));
-        members.add(new Member("NM002", "Smith", "jane@example.com", "9762899934",false));
-        members.add(new Member("SM003", "Bob", "bob@example.com", "8524133625",true));
-        members.add(new Member("NM004", "Alice", "alice@example.com", "7741522581",false));
-        members.add(new Member("SM005", "Charlie", "charlie@example.com", "9952144589",true));
+        members.add(new Member("NM002", "Smith", "jane@example.com", "9762899934", false));
+        members.add(new Member("SM003", "Bob", "bob@example.com", "8524133625", true));
+        members.add(new Member("NM004", "Alice", "alice@example.com", "7741522581", false));
+        members.add(new Member("SM005", "Charlie", "charlie@example.com", "9952144589", true));
     }
 
     // CRUD operations for vehicles
 
     @Override
-    public void addVehicle(Vehicle vehicle) throws DuplicateVehicleException
-    {
-        if(vehicles.stream()
+    public void addVehicle(Vehicle vehicle) throws DuplicateVehicleException {
+        if (vehicles.stream()
                 .anyMatch(v -> v.getVehicleNumber()
-                        .equals(vehicle.getVehicleNumber())))
-        {
+                        .equals(vehicle.getVehicleNumber()))) {
             throw new DuplicateVehicleException("Vehicle already exists");
         }
         vehicles.add(vehicle);
     }
 
     @Override
-    public void removeVehicle(Vehicle vehicle) throws VehicleNotFoundException
-    {
-        if (!vehicles.contains(vehicle))
-        {
+    public void removeVehicle(Vehicle vehicle) throws VehicleNotFoundException {
+        if (!vehicles.contains(vehicle)) {
             throw new VehicleNotFoundException("Vehicle not found");
         }
         vehicles.remove(vehicle);
     }
 
     @Override
-    public void updateVehicle(Vehicle updatedVehicle) throws VehicleNotFoundException
-    {
-        for (int i = 0; i < vehicles.size(); i++)
-        {
+    public void updateVehicle(Vehicle updatedVehicle) throws VehicleNotFoundException {
+        for (int i = 0; i < vehicles.size(); i++) {
             if (vehicles.get(i).getVehicleNumber().equals(updatedVehicle.getVehicleNumber())) {
                 vehicles.set(i, updatedVehicle);
                 System.out.println("Vehicle updated successfully.");
@@ -88,8 +81,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     @Override
-    public List<Vehicle> getVehicles()
-    {
+    public List<Vehicle> getVehicles() {
         try {
             boolean vehicleFound = false;
             for (Vehicle v : vehicles) {
@@ -107,8 +99,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     @Override
-    public List<Vehicle> filterVehiclesByType(String vehicleType)
-    {
+    public List<Vehicle> filterVehiclesByType(String vehicleType) {
         List<Vehicle> filteredVehicles = vehicles.stream()
                 .filter(v -> v.getVehicleType().equalsIgnoreCase(vehicleType))
                 .collect(Collectors.toList());
@@ -123,19 +114,16 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
 
     // CRUD operations for members
     @Override
-    public void addMember(Member member) throws DuplicateMemberException, InputException
-    {
+    public void addMember(Member member) throws DuplicateMemberException, InputException {
         if (members.stream().anyMatch(m -> m.getMemberId()
-                .equals(member.getMemberId())))
-        {
+                .equals(member.getMemberId()))) {
             throw new DuplicateMemberException("Member already exists");
         }
         members.add(member);
     }
 
     @Override
-    public void removeMember(String memberId) throws MemberNotFoundException
-    {
+    public void removeMember(String memberId) throws MemberNotFoundException {
         boolean removed = members.removeIf(member -> member.getMemberId().equals(memberId));
         if (removed) {
             System.out.println("Member with ID " + memberId + " has been removed successfully.");
@@ -145,8 +133,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     @Override
-    public void updateMember(String memberId, Member updatedMember) throws MemberNotFoundException
-    {
+    public void updateMember(String memberId, Member updatedMember) throws MemberNotFoundException {
         for (int i = 0; i < members.size(); i++) {
             if (members.get(i).getMemberId().equals(memberId)) {
                 members.set(i, updatedMember);
@@ -159,8 +146,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     @Override
-    public List<Member> getMembers()
-    {
+    public List<Member> getMembers() {
         try {
             boolean memberFound = false;
             for (Member m : members) {
@@ -170,17 +156,14 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
             if (!memberFound) {
                 throw new MemberNotFoundException("No members found in the system.");
             }
-        }
-        catch (MemberNotFoundException e)
-        {
+        } catch (MemberNotFoundException e) {
             System.out.println("Exception: " + e.getMessage());
         }
         return members;
     }
 
     @Override
-    public List<Member> filterMembers(String memberType) throws MemberNotFoundException
-    {
+    public List<Member> filterMembers(String memberType) throws MemberNotFoundException {
         List<Member> filteredMembers;
 
         if (members.isEmpty()) {
@@ -228,7 +211,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         String desiredVehicleType = scanner.nextLine().trim().toLowerCase();
 
         vehicles.stream()
-                .filter(v -> v.getStatus()==VehicleStatus.AVAILABLE)
+                .filter(v -> v.getStatus() == VehicleStatus.AVAILABLE)
                 .filter(v -> v.getVehicleType().toLowerCase().equals(desiredVehicleType))
                 .forEach(v -> {
                     double price = v.getRentalPrice();
@@ -236,7 +219,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
                         price *= 0.9;
                     }
                     System.out.printf("%s - Type: %s, Model: -%s, Price: Rs.%.2f per day%n",
-                            v.getVehicleNumber(),v.getVehicleType(), v.getVehicleModel(), price);
+                            v.getVehicleNumber(), v.getVehicleType(), v.getVehicleModel(), price);
                 });
     }
 
@@ -270,12 +253,12 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
 
         double totalRentalCost = rentalPrice * rentalDuration;
 
-        RentalTransaction transaction = new RentalTransaction(vehicle, member, rentalPrice, rentalDuration);
+        RentalTransaction transaction = new RentalTransaction(vehicle, member, rentalPrice, rentalDuration, generateTransactionID());
         rentalTransactions.add(transaction);
         vehicle.setAvailable(false);
 
-        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day. Total amount: Rs.%.2f%n",
-                vehicleNumber, memberId, rentalDuration, rentalPrice, totalRentalCost);
+        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day. Total amount: Rs.%.2f%n. Transaction ID: %s%n",
+                vehicleNumber, memberId, rentalDuration, rentalPrice, totalRentalCost, transaction.getTransactionId());
     }
 
     public String generateTransactionID() {
@@ -283,47 +266,59 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         return "TRANS" + String.format("%04d", lastTransactionID);
     }
 
-    public void viewRentalTransactions()
-    {
+    public void viewRentalTransactions() {
         if (rentalTransactions.isEmpty()) {
             throw new IllegalStateException("No transactions available. The transaction list is empty.");
         }
-            for (RentalTransaction transaction : rentalTransactions) {
-                System.out.println("Transaction ID: " + generateTransactionID());
-                System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
-                System.out.println("Member: " + transaction.getMember().getMemberId());
-                System.out.println("Rental Price per day: " + transaction.getRentalPrice());
-                System.out.println("Total Rental Cost: " + transaction.getTotalRentalCost());
-                System.out.println("Rental Duration: " + transaction.getRentalDuration());
-                System.out.println();
-            }
+        for (RentalTransaction transaction : rentalTransactions) {
+            System.out.println("Transaction ID: " + transaction.getTransactionId());
+            System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
+            System.out.println("Member: " + transaction.getMember().getMemberId());
+            System.out.println("Rental Price per day: " + transaction.getRentalPrice());
+            System.out.println("Total Rental Cost: " + transaction.getTotalRentalCost());
+            System.out.println("Rental Duration: " + transaction.getRentalDuration());
+            System.out.println();
+        }
+    }
+
+    public void saveRentalTransactions() {
+        boolean saveSuccessful = false;
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(TRANSAC_PATH))) {
+            oos.writeLong(serialVersionUID);
+            oos.writeObject(rentalTransactions);
+            saveSuccessful = true;
+        } catch (IOException e) {
+            System.out.println("Error saving rental transactions: " + e.getMessage());
         }
 
-    public void saveRentalTransactions()
-    {
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.ser"))) {
-                oos.writeObject(rentalTransactions);
-                System.out.println("Rental transactions saved successfully");
-            } catch (IOException e) {
-                System.out.println("Error saving rental transactions: " + e.getMessage());
-            }
+        if (!saveSuccessful) {
+            System.out.println("Failed to save rental transactions");
+        } else {
+            System.out.println("Rental transactions saved successfully");
         }
+    }
 
-    public void loadRentalTransactions()
-    {
-        String filePath = "D:\\Aaludra Technology Solutions\\Training\\Tasks\\Vehicle_Rental_Management_System\\src\\main\\java\\vrms\\rental_transactions.ser";
-        try {
-            FileInputStream fis = new FileInputStream(filePath);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+    public void loadRentalTransactions() {
+        boolean loadSuccessful = false;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(TRANSAC_PATH))) {
+            long savedSerialVersionUID = ois.readLong();
+            if (savedSerialVersionUID != serialVersionUID) {
+                throw new InvalidClassException("Incompatible class version");
+            }
             rentalTransactions = (List<RentalTransaction>) ois.readObject();
-            ois.close();
-            fis.close();
-            System.out.println("Rental transactions loaded successfully");
+            loadSuccessful = true;
             for (RentalTransaction transaction : rentalTransactions) {
                 System.out.println(transaction);
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading rental transactions: " + e.getMessage());
         }
+
+        if (!loadSuccessful) {
+            System.out.println("Failed to load rental transactions");
+        } else {
+            System.out.println("Rental transactions loaded successfully");
+        }
     }
+
 }

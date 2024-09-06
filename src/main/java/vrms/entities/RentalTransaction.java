@@ -7,22 +7,16 @@ public class RentalTransaction implements Serializable {
     private Member member;
     private double rentalPrice;
     private int rentalDuration;
-    private String transactionID;
+    private String transactionId;
 
-    private int lastTransactionID = 0;
-
-    public RentalTransaction(Vehicle vehicle, Member member, double rentalPrice, int rentalDuration) {
-        this.transactionID = generateTransactionID();
+    public RentalTransaction(Vehicle vehicle, Member member, double rentalPrice, int rentalDuration, String transactionId) {
+        this.transactionId = transactionId;
         this.vehicle = vehicle;
         this.member = member;
         this.rentalPrice = rentalPrice;
         this.rentalDuration = rentalDuration;
     }
 
-    public String generateTransactionID()
-    {
-        return String.valueOf(lastTransactionID++);
-    }
 
     // Getters and Setters
     public Vehicle getVehicle() {
@@ -58,12 +52,23 @@ public class RentalTransaction implements Serializable {
     }
 
 
-    public String getTransactionID() {
-        return transactionID;
+    public String getTransactionId() {
+        return transactionId;
     }
 
     public String getTotalRentalCost()
     {
         return String.valueOf(rentalPrice * rentalDuration);
     }
+
+    public String toString()
+    {
+        return "Transaction ID: " + transactionId + "\n" +
+                "Vehicle: " + vehicle.getVehicleNumber() + "\n" +
+                "Member: " + member.getMemberId() + "\n" +
+                "Rental Price: " + rentalPrice + "\n" +
+                "Rental Duration: " + rentalDuration + "\n" +
+                "Total Rental Cost: " + getTotalRentalCost();
+    }
+
 }
