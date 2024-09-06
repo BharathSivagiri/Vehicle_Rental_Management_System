@@ -61,9 +61,13 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     @Override
-    public void removeVehicle(String vehicleNumber) throws VehicleNotFoundException {
-        if (!vehicles.removeIf(v -> v.getVehicleNumber().equals(vehicleNumber)))
+    public void removeVehicle(String vehicleNumber) throws VehicleNotFoundException
+    {
+        boolean removeds = vehicles.removeIf(v -> v.getVehicleNumber().equals(vehicleNumber));
+        if (removeds) {
             System.out.println("Vehicle with number " + vehicleNumber + " has been removed successfully.");
+        }
+        else
         {
             throw new VehicleNotFoundException("Vehicle with number " + vehicleNumber + " not found.");
         }
