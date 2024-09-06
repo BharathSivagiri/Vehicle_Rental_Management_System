@@ -67,7 +67,7 @@ public class VehicleRentalManagementSystem
 
                     String memberId;
                     do {
-                        System.out.print("Enter member ID: ");
+                        System.out.print("Enter member ID(SM for Premium users and NM for regular users): ");
                         memberId = scanner.next();
                         if (!MEMBERID_PATTERN.matcher(memberId).matches()) {
                             System.out.println("Invalid member ID format");
