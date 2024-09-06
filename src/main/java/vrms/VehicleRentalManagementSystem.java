@@ -270,4 +270,5 @@ public class VehicleRentalManagementSystem
                     System.out.println("Invalid choice");
             }
         }
-    }    }
+    }
+}
