@@ -176,7 +176,7 @@ public class VehicleRentalManagementSystem
                     }
                     catch (DuplicateVehicleException e)
                     {
-                        System.out.println("Error adding vehicle. Try again");
+                        System.out.println("Duplicate vehicle number found. Please enter a unique vehicle number.");
                     }
                     break;
                 case 7:
