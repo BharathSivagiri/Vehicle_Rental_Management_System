@@ -66,7 +66,7 @@ public class RentalTransaction implements Serializable {
         return "Transaction ID: " + transactionId + "\n" +
                 "Vehicle: " + vehicle.getVehicleNumber() + "\n" +
                 "Member: " + member.getMemberId() + "\n" +
-                "Rental Price: " + rentalPrice + "\n" +
+                "Rental Price per day: " + rentalPrice + "\n" +
                 "Rental Duration: " + rentalDuration + "\n" +
                 "Total Rental Cost: " + getTotalRentalCost();
     }

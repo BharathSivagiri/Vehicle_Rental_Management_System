@@ -86,7 +86,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
             boolean vehicleFound = false;
             for (Vehicle v : vehicles) {
                 System.out.println(v);
-                System.out.println("Vehicle Details fetched successfully");
+
                 vehicleFound = true;
             }
             if (!vehicleFound) {
@@ -95,7 +95,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         } catch (VehicleNotFoundException e) {
             System.out.println("Exception: " + e.getMessage());
         }
-
+        System.out.println("Vehicle Details fetched successfully");
         return vehicles;
     }
 
@@ -160,7 +160,9 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         } catch (MemberNotFoundException e) {
             System.out.println("Exception: " + e.getMessage());
         }
+        System.out.println("Member Details fetched successfully");
         return members;
+
     }
 
     @Override
@@ -219,7 +221,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
                     if (isSpecialMember) {
                         price *= 0.9;
                     }
-                    System.out.printf("%s - Type: %s, Model: -%s, Price: Rs.%.2f per day%n",
+                    System.out.printf("%s - Type: %s, Model: %s, Price: Rs.%.2f per day%n",
                             v.getVehicleNumber(), v.getVehicleType(), v.getVehicleModel(), price);
                 });
     }
@@ -258,7 +260,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         rentalTransactions.add(transaction);
         vehicle.setAvailable(false);
 
-        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day. Total amount: Rs.%.2f%n. Transaction ID: %s%n",
+        System.out.printf("Vehicle %s rented to member %s for %d days at Rs.%.2f per day. Total amount: Rs.%.2f%n Transaction ID: %s%n",
                 vehicleNumber, memberId, rentalDuration, rentalPrice, totalRentalCost, transaction.getTransactionId());
     }
 
@@ -271,7 +273,10 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         if (rentalTransactions.isEmpty()) {
             throw new IllegalStateException("No transactions available. The transaction list is empty.");
         }
-        for (RentalTransaction transaction : rentalTransactions) {
+        for (RentalTransaction transaction : rentalTransactions)
+        {
+            System.out.println("Transaction Details:");
+            System.out.println(" ");
             System.out.println("Transaction ID: " + transaction.getTransactionId());
             System.out.println("Vehicle: " + transaction.getVehicle().getVehicleNumber());
             System.out.println("Member: " + transaction.getMember().getMemberId());
@@ -279,6 +284,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
             System.out.println("Total Rental Cost: " + transaction.getTotalRentalCost());
             System.out.println("Rental Duration: " + transaction.getRentalDuration());
             System.out.println();
+            System.out.println("Fetched successfully");
         }
     }
 
