@@ -3,7 +3,6 @@ package vrms.functionalities;
 import vrms.entities.Member;
 import vrms.entities.RentalTransaction;
 import vrms.entities.Vehicle;
-import vrms.entities.VehicleStatus;
 import vrms.exceptions.*;
 import vrms.service.MemberInterface;
 import vrms.service.VehicleInterface;
