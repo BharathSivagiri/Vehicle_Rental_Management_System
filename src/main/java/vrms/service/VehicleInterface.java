@@ -10,7 +10,7 @@ public interface VehicleInterface
 {
     void addVehicle(Vehicle vehicle) throws DuplicateVehicleException;
 
-    void removeVehicle(Vehicle vehicle) throws VehicleNotFoundException;
+    void removeVehicle(String vehicleNumber) throws VehicleNotFoundException;
 
     void updateVehicle(Vehicle vehicle) throws VehicleNotFoundException;
 

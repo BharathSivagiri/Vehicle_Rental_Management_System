@@ -148,7 +148,7 @@ public class VehicleRentalManagementSystem
                     String newMemberEmail = scanner.next();
                     System.out.print("New Premium Member status? (enter true/false): ");
                     boolean newIsSpecialMember = scanner.nextBoolean();
-                    Member updatedMember = new Member(newMemberName, memberIdToUpdate, newMemberEmail, newMemberPhone, newIsSpecialMember);
+                    Member updatedMember = new Member(memberIdToUpdate, newMemberName, newMemberEmail, newMemberPhone, newIsSpecialMember);
                     try {
                         vehicleRentalSystem.updateMember(memberIdToUpdate, updatedMember);
                     } catch (MemberNotFoundException e) {
@@ -184,9 +184,8 @@ public class VehicleRentalManagementSystem
                     System.out.println("Enter vehicle details:");
                     System.out.print("Enter vehicle number: ");
                     String vehicleNumberToRemove = scanner.next();
-                    Vehicle vehicleToRemove = new Vehicle(vehicleNumberToRemove, "", "", 0.0, AVAILABLE);
                     try {
-                        vehicleRentalSystem.removeVehicle(vehicleToRemove);
+                        vehicleRentalSystem.removeVehicle(vehicleNumberToRemove);
                     } catch (VehicleNotFoundException e) {
                         System.out.println(e.getMessage());
                     }
@@ -271,4 +270,4 @@ public class VehicleRentalManagementSystem
                     System.out.println("Invalid choice");
             }
         }
-    }}
+    }    }

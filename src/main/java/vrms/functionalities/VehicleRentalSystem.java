@@ -35,11 +35,11 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     public void initialData() {
-        vehicles.add(new Vehicle("TN-33-AS-2452", "Car", "Sedan", 1000, VehicleStatus.AVAILABLE));
-        vehicles.add(new Vehicle("TN-33-BK-7891", "Bike", "Sports", 500, VehicleStatus.AVAILABLE));
-        vehicles.add(new Vehicle("TN-33-CL-4567", "Truck", "Pickup", 1500, VehicleStatus.AVAILABLE));
-        vehicles.add(new Vehicle("TN-33-DM-2345", "Car", "SUV", 1200, VehicleStatus.AVAILABLE));
-        vehicles.add(new Vehicle("TN-33-GH-6789", "Bike", "Cruiser", 600, VehicleStatus.AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-AS-2452", "Car", "Sedan", 1000, AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-BK-7891", "Bike", "Sports", 500, AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-CL-4567", "Truck", "Pickup", 1500, AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-DM-2345", "Car", "SUV", 1200, AVAILABLE));
+        vehicles.add(new Vehicle("TN-33-GH-6789", "Bike", "Cruiser", 600, AVAILABLE));
 
         members.add(new Member("SM001", "John", "john@example.com", "9876543210", true));
         members.add(new Member("NM002", "Smith", "jane@example.com", "9762899934", false));
@@ -61,11 +61,12 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
     }
 
     @Override
-    public void removeVehicle(Vehicle vehicle) throws VehicleNotFoundException {
-        if (!vehicles.contains(vehicle)) {
-            throw new VehicleNotFoundException("Vehicle not found");
+    public void removeVehicle(String vehicleNumber) throws VehicleNotFoundException {
+        if (!vehicles.removeIf(v -> v.getVehicleNumber().equals(vehicleNumber)))
+            System.out.println("Removed successfully");
+        {
+            throw new VehicleNotFoundException("Vehicle with number " + vehicleNumber + " not found.");
         }
-        vehicles.remove(vehicle);
     }
 
     @Override
@@ -214,7 +215,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         String desiredVehicleType = scanner.nextLine().trim().toLowerCase();
 
         vehicles.stream()
-                .filter(v -> v.getStatus() == VehicleStatus.AVAILABLE)
+                .filter(v -> v.getStatus() == AVAILABLE)
                 .filter(v -> v.getVehicleType().toLowerCase().equals(desiredVehicleType))
                 .forEach(v -> {
                     double price = v.getRentalPrice();
@@ -233,7 +234,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
                 .orElseThrow(() -> new MemberNotFoundException("Member not found"));
 
         Vehicle vehicle = vehicles.stream()
-                .filter(v -> v.getVehicleNumber().equals(vehicleNumber) && v.getStatus() == VehicleStatus.AVAILABLE)
+                .filter(v -> v.getVehicleNumber().equals(vehicleNumber) && v.getStatus() == AVAILABLE)
                 .findFirst()
                 .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
 
