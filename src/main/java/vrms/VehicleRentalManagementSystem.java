@@ -138,7 +138,7 @@ public class VehicleRentalManagementSystem
                 case 5:
                     // Update member
                     System.out.println("Enter member details to update:");
-                    System.out.print("Enter member ID: ");
+                    System.out.print("Enter member ID (SM for Premium users and NM for regular users): ");
                     String memberIdToUpdate = scanner.next();
                     System.out.print("Enter new member name: ");
                     String newMemberName = scanner.next();
@@ -146,7 +146,7 @@ public class VehicleRentalManagementSystem
                     String newMemberPhone = scanner.next();
                     System.out.print("Enter new member email: ");
                     String newMemberEmail = scanner.next();
-                    System.out.print("New Premium Member status? (true/false): ");
+                    System.out.print("New Premium Member status? (enter true/false): ");
                     boolean newIsSpecialMember = scanner.nextBoolean();
                     Member updatedMember = new Member(newMemberName, memberIdToUpdate, newMemberEmail, newMemberPhone, newIsSpecialMember);
                     try {

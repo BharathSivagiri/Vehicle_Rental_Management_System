@@ -86,6 +86,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
             boolean vehicleFound = false;
             for (Vehicle v : vehicles) {
                 System.out.println(v);
+                System.out.println("Vehicle Details fetched successfully");
                 vehicleFound = true;
             }
             if (!vehicleFound) {
