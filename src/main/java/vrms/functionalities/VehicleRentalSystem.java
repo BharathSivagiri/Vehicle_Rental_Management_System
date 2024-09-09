@@ -218,8 +218,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
         String desiredVehicleType = scanner.nextLine().trim().toLowerCase();
 
         vehicles.stream()
-                .filter(v -> v.getStatus() == AVAILABLE)
-                .filter(v -> v.getVehicleType().toLowerCase().equals(desiredVehicleType))
+                .filter(v -> v.getStatus() == AVAILABLE && v.getVehicleType().toLowerCase().equals(desiredVehicleType))
                 .forEach(v -> {
                     double price = v.getRentalPrice();
                     if (isSpecialMember) {
@@ -318,9 +317,7 @@ public class VehicleRentalSystem implements VehicleInterface, MemberInterface, S
             }
             rentalTransactions = (List<RentalTransaction>) ois.readObject();
             loadSuccessful = true;
-            for (RentalTransaction transaction : rentalTransactions) {
-                System.out.println(transaction);
-            }
+            rentalTransactions.forEach(transaction -> System.out.println(transaction +"\n"));
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error loading rental transactions: " + e.getMessage());
         }
